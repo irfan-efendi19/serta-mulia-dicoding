@@ -5,14 +5,10 @@ const storeData = require("../services/storeData");
 async function postPredictHandler(request, h) {
   const { image } = request.payload;
   const { model } = request.server.app;
-
-  await storeData(id, data);
-
   const { confidenceScore, label, explanation, suggestion } =
     await predictClassification(model, image);
   const id = crypto.randomUUID();
   const createdAt = new Date().toISOString();
-
   const data = {
     id: id,
     result: label,
@@ -22,6 +18,7 @@ async function postPredictHandler(request, h) {
     createdAt: createdAt,
   };
 
+  await storeData(id, data);
   const response = h.response({
     status: "success",
     message:
